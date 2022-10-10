@@ -1,0 +1,20 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
+}
+
+datasource db {
+  provider             = "mysql"
+  url                  = env("DATABASE_URL")
+  referentialIntegrity = "prisma"
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model shortLink {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  url        String   @db.VarChar(2000)
+  slug       String   @unique
+
+  @@index(slug)
+}
