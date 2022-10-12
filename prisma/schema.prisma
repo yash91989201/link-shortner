@@ -35,7 +35,7 @@ model ShortLink {
   created_at DateTime @default(now())
   url        String   @db.VarChar(2000)
   slug       String   @unique
-  User       User[]
+  // User       User[]
 
   @@index(slug)
 }
@@ -56,8 +56,8 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
-  owned_links   ShortLink @relation(fields: [shortLinkId], references: [id])
-  shortLinkId   String
+  // owned_links   ShortLink? @relation(fields: [shortLinkId], references: [id])
+  // shortLinkId   String
 }
 
 model VerificationToken {
