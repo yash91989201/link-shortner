@@ -19,7 +19,7 @@ export default function SignIn({ providers }: Props) {
             <div key={provider.name} >
                 <button
                     className='p-3 flex items-center rounded-full border-gray-600 border  space-x-3'
-                    onClick={() => signIn(provider.id)}
+                    onClick={() => signIn(provider.id, { callbackUrl: "/my-links", redirect: true })}
                 >
                     <FcGoogle className='text-2xl' />
                     <span> Sign in with {provider.name}</span>

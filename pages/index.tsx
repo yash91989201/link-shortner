@@ -1,13 +1,13 @@
 import Head from 'next/head'
 import { GetServerSidePropsContext } from 'next'
-import { User } from 'next-auth'
+import { Session, User } from 'next-auth'
 import { getSession, useSession } from 'next-auth/react'
 
 interface Props {
-  user: User
+  session: Session
 }
 
-export default function Home({ user }: Props): JSX.Element {
+export default function Home({ session }: Props): JSX.Element {
 
   return <div>
     <Head>
@@ -18,25 +18,3 @@ export default function Home({ user }: Props): JSX.Element {
   </div>
 
 }
-
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const session = await getSession()
-  console.log("session");
-  console.log(session);
-  if (session == null) {
-    return {
-      redirect: {
-        permanent: false,
-        destination: "/landing"
-      }
-    }
-  }
-
-  return {
-    props: {
-      user: session?.user
-    }
-  }
-
-}
-
