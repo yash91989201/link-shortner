@@ -12,7 +12,6 @@ export default function Header() {
         return router.asPath === matchPath ? "text-indigo-600 underline" : ""
     }
 
-
     return <header className='p-3 bg-gray-50 shadow-md'>
         <div className="max-w-6xl mx-auto flex justify-between items-center">
             <Link href="/">

@@ -1,5 +1,6 @@
 import type { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { SessionProvider } from "next-auth/react"
 import type { Session } from "next-auth"
 import '../styles/globals.css'
@@ -12,6 +13,8 @@ interface Props extends AppProps {
   }
 }
 
+export const query_client = new QueryClient()
+
 function MyApp({ Component, pageProps: { session, ...pageProps } }: Props) {
 
   const router = useRouter()
@@ -22,9 +25,11 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: Props) {
     </SessionProvider>
 
   return <SessionProvider session={session}>
-    <Layout>
-      <Component {...pageProps} />
-    </Layout>
+    <QueryClientProvider client={query_client}>
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
+    </QueryClientProvider>
   </SessionProvider>
 
 }

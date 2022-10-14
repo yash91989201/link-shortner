@@ -35,7 +35,8 @@ model ShortLink {
   created_at DateTime @default(now())
   url        String   @db.VarChar(2000)
   slug       String   @unique
-  // User       User[]
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
 
   @@index(slug)
 }
@@ -49,15 +50,14 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String      @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String?     @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
-  // owned_links   ShortLink? @relation(fields: [shortLinkId], references: [id])
-  // shortLinkId   String
+  ShortLink     ShortLink[]
 }
 
 model VerificationToken {

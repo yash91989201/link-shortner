@@ -1,3 +1,4 @@
+import { Toaster } from 'react-hot-toast'
 // custom components
 import Header from "./Header"
 
@@ -8,6 +9,7 @@ interface Props {
 export default function Layout({ children }: Props) {
 
     return <>
+        <Toaster />
         <Header />
         {children}
     </>

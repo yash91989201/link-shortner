@@ -11,7 +11,7 @@ export default function LinkStats({ session }: Props): JSX.Element {
 
     return <div>
         <Head>
-            <title>Link Stats &minus; Link Shortner</title>
+            <title>Link Stats &vert; Link Shortner</title>
             <meta name="description" content="Shorten your links and share them all over the world" />
         </Head>
     </div>
@@ -20,7 +20,7 @@ export default function LinkStats({ session }: Props): JSX.Element {
 
 export const getServerSideProps: GetServerSideProps = withAuth({
 
-    gssp: (context) => {
+    async gssp(context) {
         return {
             props: {}
         }
