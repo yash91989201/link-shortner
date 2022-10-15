@@ -7,7 +7,7 @@ interface Props {
     session: Session
 }
 
-export default function LinkStats({ session }: Props): JSX.Element {
+export default function Index({ session }: Props): JSX.Element {
 
     return <div>
         <Head>

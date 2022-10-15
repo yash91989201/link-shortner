@@ -11,10 +11,11 @@ import withAuth from 'utils/withAuth'
 // import icons
 import { HiOutlinePlusSm } from 'react-icons/hi'
 import { SubmitHandler } from 'react-hook-form/dist/types'
+import LinkCard from 'components/MyLinks/LinkCard'
 
 interface Props {
     user: User,
-    links: ShortLink[]
+    links: GetLinkResult<ShortLink[]>
 }
 
 interface FormProps {
@@ -25,35 +26,38 @@ interface FormProps {
 
 export default function MyLinks({ user, links }: Props): JSX.Element {
 
-    const { register, handleSubmit, watch, formState: { errors } } = useForm<FormProps>()
-    const queryResult = useQuery(
-        ['links'],
-        async(variables)<GetLinkResult, GetLinkVars> => getLinks({ userId: variables.userId }),
-        {
-            initialData: links
-        })
-    const mutate = useMutation({
+    const { register, handleSubmit, watch, reset, formState: { errors } } = useForm<FormProps>()
+    const { data: queryResult } = useQuery<GetLinkResult<ShortLink[]>>(
+        ['get-links'],
+        (): Promise<GetLinkResult<ShortLink[]>> => getLinks({ userId: user.id }), {
+        initialData: links
+    })
+    const { mutate: createLinkMutation } = useMutation({
         mutationKey: ['create-link'],
-        mutationFn: (variables: CreateLinkVars) => createLink(variables)
+        mutationFn: (variables: CreateLinkVars) => createLink(variables),
     })
 
-    // const router = useRouter()
-
     const createLinkHandler: SubmitHandler<FormProps> = async (formData) => {
-
         try {
-            const fetchResult = await fetch("/api/link/create-link", {
-                method: 'POST',
-                body: JSON.stringify({ userId: user.id, url: formData.url, slug: formData.slug }),
-                headers: {
-                    'content-type': 'application/json'
+            const id = toast.loading('Creating new short link')
+            createLinkMutation({ userId: user.id, url: formData.url, slug: formData.slug }, {
+                onSuccess(data) {
+                    const { success, message } = data
+                    if (success) {
+                        toast.success(message as string, {
+                            id,
+                            duration: 3600
+                        })
+                        query_client.refetchQueries(['get-links'])
+                        reset()
+                        return
+                    }
+                    toast.error(message as string, {
+                        id,
+                        duration: 3600
+                    })
                 }
             })
-            const res = await fetchResult.json()
-            if (res.success) {
-                query_client.refetchQueries(['links'])
-            }
-            // throw new Error("ello")
         } catch (error: unknown) {
             if (error instanceof Error)
                 toast.error(error.message, {
@@ -65,47 +69,57 @@ export default function MyLinks({ user, links }: Props): JSX.Element {
 
     return <div className='p-3'>
         <Head>
-            <title>My Links &vert; Link Shortner</title>
+            <title>My Links | Link Shortner</title>
             <meta name='description' content='Shorten your links and share them all over the world' />
         </Head>
         <div className='max-w-6xl mx-auto flex flex-col'>
             <h2 className='my-6 font-bold text-3xl'>My Links</h2>
             <form
-                className='my-3 flex flex-col space-y-3'
+                className='my-3'
                 onSubmit={handleSubmit(createLinkHandler)}
             >
-                <div className='flex space-x-3'>
-                    <input
-                        {...register('url')}
-                        className='px-2 border-gray-300 border-2 flex-1   
-                    rounded-md focus:outline-none focus:border-indigo-500'
-                        placeholder='Paste your link here'
+                <div className='flex flex-col sm:flex-row space-x-0 space-y-3 sm:space-x-3 sm:space-y-0'>
+                    <div className=' flex-1 flex flex-col xs:flex-row space-x-0 space-y-3 xs:space-x-3 xs:space-y-0 '>
+                        <input
+                            {...register('url')}
+                            className='px-2 border-gray-300 border-2 flex-1   
+                    rounded focus:outline-none focus:border-indigo-500'
+                            placeholder='Paste your link here'
 
-                    />
-                    <input
-                        {...register('slug')}
-                        className='px-2 border-gray-300 border-2 flex-1   
-                    rounded-md focus:outline-none focus:border-indigo-500'
-                        placeholder='Provide a short name'
+                        />
+                        <input
+                            {...register('slug')}
+                            className='px-2 border-gray-300 border-2 flex-1   
+                    rounded focus:outline-none focus:border-indigo-500'
+                            placeholder='Provide a short name'
 
-                    />
+                        />
+                    </div>
                     <button
                         type='submit'
-                        className='p-2 flex justify-evenly items-center
-                     bg-indigo-500 text-white font-medium rounded-md'
+                        className='px-3 py-1.5 flex justify-evenly items-center self-center sm:self-auto
+                     bg-indigo-500 text-white font-medium rounded'
                     >
                         <HiOutlinePlusSm />
                         <span>New Link</span>
                     </button>
                 </div>
             </form>
-            <div className='my-6 border-red-500 border'>
-                {
-                    !!queryResult.data && queryResult.data.map((link) => <div key={link.id}>
-                        <p>{link.slug}</p>
-                    </div>)
-                }
-            </div>
+            {
+                queryResult.data?.length == 0 &&
+                <div className='my-6 p-12 md:p-24 border-gray-200 border-2 text-center rounded'>
+                    <p className='text-3xl font-bold text-gray-200'>No links created</p>
+                </div>
+            }
+            {
+
+                <div className='my-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4'>
+                    {
+                        !!queryResult.data && queryResult.data.map((link) => <LinkCard key={link.id} link={link} />)
+
+                    }
+                </div>
+            }
         </div>
     </div>
 
@@ -115,7 +129,7 @@ export default function MyLinks({ user, links }: Props): JSX.Element {
 
 export const getServerSideProps: GetServerSideProps = withAuth({
     async gssp(_, user) {
-        const links = await getLinks(user?.id as string)
+        const links = await getLinks({ userId: user?.id as string })
         return {
             props: {
                 user,

@@ -11,9 +11,15 @@ interface GetLinkVars {
 interface GetLinkResult<T> extends CustomResponseType<T> {}
 
 interface CreateLinkVars {
-  user_id: string;
+  userId: string;
   url: string;
   slug: string;
 }
 
 interface CreateLinkResult<T> extends CustomResponseType<T> {}
+
+interface DeleteLinkVars {
+  id: string;
+}
+
+interface DeleteLinkResult<T> extends CustomResponseType<T> {}

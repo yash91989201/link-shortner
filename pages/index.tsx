@@ -6,7 +6,7 @@ export default function Home(): JSX.Element {
 
   return <div>
     <Head>
-      <title>Home &vert; Link Shortner</title>
+      <title>Home | Link Shortner</title>
       <meta name="description" content="Shorten your links and share them all over the world" />
     </Head>
     <div>ello</div>

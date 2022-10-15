@@ -7,18 +7,33 @@ export default async function handler(
 ) {
   const { userId, url, slug } = req.body;
   try {
-    const queryResult = await prisma.shortLink.create({
-      data: {
-        userId,
-        url,
+    const slugExists = await prisma.shortLink.findFirst({
+      where: {
         slug,
       },
     });
-    res.status(200).json({ success: true, data: queryResult });
+    if (slugExists == null) {
+      const queryResult = await prisma.shortLink.create({
+        data: {
+          userId,
+          url,
+          slug,
+        },
+      });
+      return res.status(200).json({
+        success: true,
+        message: "Short link created",
+        data: queryResult,
+      });
+    }
+    res.status(400).json({
+      success: false,
+      message: "Short link already exists, choose a unique name",
+    });
   } catch (error) {
     console.log(error);
     res
-      .status(200)
+      .status(400)
       .json({ success: false, message: "Unable to add short link" });
   }
 }

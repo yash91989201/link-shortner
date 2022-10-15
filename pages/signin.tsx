@@ -12,7 +12,7 @@ export default function SignIn({ providers }: Props) {
 
     return <div className='w-full h-screen flex justify-center items-center'>
         <Head>
-            <title>Signin &minus; Link Shortner</title>
+            <title>Signin | Link Shortner</title>
             <meta name="description" content="Shorten your links and share them all over the world" />
         </Head>
         {Object.values(providers).map((provider) => (
