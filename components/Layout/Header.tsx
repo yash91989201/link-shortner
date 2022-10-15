@@ -17,7 +17,7 @@ export default function Header() {
         return router.route.startsWith(matchPath) ? "text-indigo-600" : ""
     }
 
-    return <header className='relative p-3 bg-gray-50 shadow-md'>
+    return <header className='relative z-50  p-3 bg-gray-50 shadow-md'>
         <div className="max-w-6xl mx-auto flex justify-between items-center">
             <Link href="/">
                 <a className="flex items-center space-x-3">
@@ -27,7 +27,7 @@ export default function Header() {
                     <h2 className='text-lg md:text-2xl font-semibold text-indigo-500'>Link Shortner</h2>
                 </a>
             </Link>
-            <div className='hidden md:flex items-center space-x-3'>
+            <div className='hidden sm:flex items-center space-x-3'>
                 {
                     user.status === "authenticated" &&
                     <>
@@ -42,7 +42,7 @@ export default function Header() {
                 <SigninBtn />
             </div>
             <div
-                className="p-2 border-indigo-500 border md:hidden  text-indigo-500 rounded-md"
+                className="p-2 border-indigo-500 border sm:hidden  text-indigo-500 rounded-md"
                 onClick={() => setMenu(!menu)}
             >
                 <HiMenuAlt4 />
@@ -50,19 +50,19 @@ export default function Header() {
         </div>
         <div className={`
             menu
-            ${menu ? "flex" : "hidden"}
+            ${menu ? "scale-y-100 " : "scale-y-0 "}
         `}>
             <Link href="/my-links">
-                <a className="menu-item">My Links</a>
+                <a className="menu-item" onClick={() => setMenu(false)}>My Links</a>
             </Link>
             <Link href="/link-stats">
-                <a className="menu-item">Link Stats</a>
+                <a className="menu-item" onClick={() => setMenu(false)}>Link Stats</a>
             </Link>
             <Link href="/account">
-                <a className="menu-item">Link Stats</a>
+                <a className="menu-item" onClick={() => setMenu(false)}>Account</a>
             </Link>
             <button
-                className='menu-item flex justify-start items-center bg-gray-100 text-gray-900'
+                className='menu-item flex justify-between items-center bg-gray-100 text-gray-900'
                 onClick={() => signOut()}>
                 <p>Signout</p>
                 <TbLogout className='mx-3' />

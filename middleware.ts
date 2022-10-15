@@ -1,10 +1,6 @@
-import { NextFetchEvent, NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export default async function middleware(
-  req: NextRequest,
-  res: NextResponse,
-  event: NextFetchEvent
-) {
+export default async function middleware(req: NextRequest) {
   if (req.nextUrl.pathname.startsWith("/r/")) {
     console.log("redirect url");
     const slug = req.nextUrl.pathname.split("/").pop();

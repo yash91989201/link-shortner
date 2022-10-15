@@ -3,22 +3,24 @@
 
 @layer components {
   .dropdown-btn {
-    @apply flex justify-evenly items-center whitespace-nowrap font-medium text-xs leading-tight uppercase text-white rounded-full  space-x-3 bg-white border-gray-400 border focus:outline-none focus:ring-0 active:text-white transition-all duration-150 ease-in-out;
+    @apply flex justify-evenly items-center whitespace-nowrap font-medium text-xs leading-tight
+     uppercase text-white rounded-full  space-x-3 bg-white border-gray-400 border 
+     focus:outline-none focus:ring-0 active:text-white transition-all duration-150 ease-in-out;
   }
 
   .dropdown-item {
-    @apply text-sm py-2 px-4 font-normal block rounded-md  w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100;
+    @apply text-sm py-2 px-4 font-normal block rounded-md w-full whitespace-nowrap 
+    bg-transparent text-gray-700 hover:bg-gray-100;
   }
 
   .menu {
-    @apply absolute z-[99] -bottom-48 left-0 right-0
-            mx-3 p-2  flex-col  md:hidden rounded bg-indigo-500 shadow-xl
-            space-y-1.5;
+    @apply absolute z-[99] top-16 left-0 right-0 origin-top transition-all mx-3 p-2  
+    flex-col  sm:hidden rounded bg-indigo-500 shadow-xl space-y-1.5;
   }
 
   .menu-item {
-    @apply text-sm py-2 px-4 font-semibold block rounded-md 
-    w-full whitespace-nowrap bg-transparent text-gray-100 hover:bg-gray-100 hover:text-gray-900;
+    @apply text-sm py-2 px-4 font-semibold block rounded-md w-full whitespace-nowrap 
+    bg-transparent text-gray-100 hover:bg-gray-100 hover:text-gray-900;
   }
 }
 
