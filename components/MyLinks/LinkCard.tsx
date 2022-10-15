@@ -48,10 +48,10 @@ export default function LinkCard({ link }: Props): JSX.Element {
         toast.success("Copied to clipboard")
     }
 
-    return <div className='w-full p-3 flex flex-col bg-gray-50 shadow-lg rounded'>
+    return <div className='w-full p-3 flex flex-col bg-gray-50 shadow-md hover:shadow-lg  rounded'>
         <div className="flex flex-col">
             <div className="my-1 flex justify-end ">
-                <button className='text-sm p-1.5 flex items-center  bg-yellow-500 text-white rounded-full space-x-2'
+                <button className='text-sm p-1.5 flex items-center  bg-yellow-400 text-white rounded-full space-x-2'
                     onClick={() => copyToClipboard(shortLink)}>
                     <HiShare />
                 </button>
@@ -67,13 +67,15 @@ export default function LinkCard({ link }: Props): JSX.Element {
                     <MdDelete />
                 </button>
             </div>
-            <h2 className="text-xl font-semibold">{link.url}</h2>
-            <span className="text-gray-400 text-sm">
-                Created <ReactTimeAgo date={link.created_at} minPeriod={36000} />
-            </span>
+            <div className="my-2 flex flex-col space-y-1">
+                <h2 className="text-lg md:text-xl font-semibold">{link.url}</h2>
+                <span className="text-gray-400 text-xs md:text-sm">
+                    Created <ReactTimeAgo date={link.created_at} minPeriod={3600} />
+                </span>
+            </div>
         </div>
         <Link href={`/r/${link.slug}`} >
-            <a target="_blank" className='my-3 text-xl text-indigo-500 underline'>{shortLink}</a>
+            <a target="_blank" className='my-3 text-xl md:text-2xl text-indigo-500 hover:underline'>{shortLink}</a>
         </Link>
 
     </div>

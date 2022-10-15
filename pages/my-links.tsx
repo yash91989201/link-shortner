@@ -73,7 +73,7 @@ export default function MyLinks({ user, links }: Props): JSX.Element {
             <meta name='description' content='Shorten your links and share them all over the world' />
         </Head>
         <div className='max-w-6xl mx-auto flex flex-col'>
-            <h2 className='my-6 font-bold text-3xl'>My Links</h2>
+            <h2 className='my-3 md:my-6 font-bold text-lg md:text-2xl'>My Links</h2>
             <form
                 className='my-3'
                 onSubmit={handleSubmit(createLinkHandler)}
@@ -81,34 +81,37 @@ export default function MyLinks({ user, links }: Props): JSX.Element {
                 <div className='flex flex-col sm:flex-row space-x-0 space-y-3 sm:space-x-3 sm:space-y-0'>
                     <div className=' flex-1 flex flex-col xs:flex-row space-x-0 space-y-3 xs:space-x-3 xs:space-y-0 '>
                         <input
-                            {...register('url')}
-                            className='px-2 border-gray-300 border-2 flex-1   
-                    rounded focus:outline-none focus:border-indigo-500'
-                            placeholder='Paste your link here'
-
-                        />
+                            {...register('url', { required: true })}
+                            className='p-2  border-gray-300 border-2 flex-1   
+                                rounded focus:outline-none focus:border-indigo-500 text-sm md:text-base'
+                            placeholder='Paste your link here' />
                         <input
-                            {...register('slug')}
-                            className='px-2 border-gray-300 border-2 flex-1   
-                    rounded focus:outline-none focus:border-indigo-500'
-                            placeholder='Provide a short name'
-
-                        />
+                            {...register('slug', { required: true })}
+                            className='p-2 border-gray-300 border-2 flex-1   
+                                rounded focus:outline-none focus:border-indigo-500 text-sm md:text-base'
+                            placeholder='Provide a short name' />
                     </div>
                     <button
                         type='submit'
                         className='px-3 py-1.5 flex justify-evenly items-center self-center sm:self-auto
-                     bg-indigo-500 text-white font-medium rounded'
-                    >
+                        bg-indigo-500 text-white font-medium rounded text-sm md:text-base'>
                         <HiOutlinePlusSm />
                         <span>New Link</span>
                     </button>
+                </div>
+                <div className='text-red-500 font-medium'>
+                    {
+                        errors.url && errors.url.type == "required" && <p>Url is required!</p>
+                    }
+                    {
+                        errors.slug && errors.slug.type == "required" && <p>Short name is required!</p>
+                    }
                 </div>
             </form>
             {
                 queryResult.data?.length == 0 &&
                 <div className='my-6 p-12 md:p-24 border-gray-200 border-2 text-center rounded'>
-                    <p className='text-3xl font-bold text-gray-200'>No links created</p>
+                    <p className='text-lg md:text-2xl font-bold text-gray-200'>No links created</p>
                 </div>
             }
             {
