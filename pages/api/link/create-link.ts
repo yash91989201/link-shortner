@@ -6,6 +6,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const { userId, url, slug } = req.body;
+  const containsHTTP = url.startsWith("https://");
   try {
     const slugExists = await prisma.shortLink.findFirst({
       where: {
@@ -16,7 +17,7 @@ export default async function handler(
       const queryResult = await prisma.shortLink.create({
         data: {
           userId,
-          url,
+          url: containsHTTP ? url : `https://${url}`,
           slug,
         },
       });
