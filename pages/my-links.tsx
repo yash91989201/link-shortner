@@ -1,7 +1,6 @@
 import Head from 'next/head'
 import { useForm } from 'react-hook-form'
 import { GetServerSideProps } from 'next'
-import { useRouter } from 'next/router'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { query_client } from './_app'
 import { getLinks, createLink } from "utils/link"
@@ -26,7 +25,7 @@ interface FormProps {
 
 export default function MyLinks({ user, links }: Props): JSX.Element {
 
-    const { register, handleSubmit, watch, reset, formState: { errors } } = useForm<FormProps>()
+    const { register, handleSubmit, reset, formState: { errors } } = useForm<FormProps>()
     const { data: queryResult } = useQuery<GetLinkResult<ShortLink[]>>(
         ['get-links'],
         (): Promise<GetLinkResult<ShortLink[]>> => getLinks({ userId: user.id }), {

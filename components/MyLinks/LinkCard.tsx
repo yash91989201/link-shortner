@@ -47,7 +47,6 @@ export default function LinkCard({ link }: Props): JSX.Element {
         window.navigator.clipboard.writeText(text)
         toast.success("Copied to clipboard")
     }
-
     return <div className='w-full p-3 flex flex-col bg-gray-50 shadow-md hover:shadow-lg  rounded'>
         <div className="flex flex-col">
             <div className="my-1 flex justify-end ">
@@ -77,6 +76,5 @@ export default function LinkCard({ link }: Props): JSX.Element {
         <Link href={`/r/${link.slug}`} >
             <a target="_blank" className='my-3 text-xl md:text-2xl text-indigo-500 hover:underline'>{shortLink}</a>
         </Link>
-
     </div>
 }
