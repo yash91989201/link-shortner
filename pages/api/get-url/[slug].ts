@@ -15,10 +15,10 @@ export default async function handler(
       },
     });
     if (queryResult !== null) {
-      res.status(200).json({ url: queryResult?.url });
+      res.status(200).json({ success: true, url: queryResult?.url });
     }
-  } catch (error) {
-    res.status(404);
     res.end();
+  } catch (error) {
+    res.status(200).json({ success: false, message: "Unable to find url" });
   }
 }
