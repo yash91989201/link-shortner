@@ -49,7 +49,7 @@ export default function LinkCard({ link }: Props): JSX.Element {
     }
 
     return <div className='w-full p-3 flex flex-col bg-gray-50 shadow-md hover:shadow-lg  rounded'>
-        <div className="flex flex-col">
+        <div className="flex-1 flex flex-col">
             <div className="my-1 flex justify-end ">
                 <button className='text-sm p-1.5 flex items-center  bg-yellow-400 text-white rounded-full space-x-2'
                     onClick={() => copyToClipboard(shortLink)}>

@@ -33,10 +33,9 @@ export default function SigninBtn() {
                         w-40  absolute  z-50 right-0
                         ${menuState ? "" : "hidden"}
                         m-0 mt-6 p-2
-                        flex flex-col
+                        flex flex-col bg-white
                         text-base text-left space-y-2
                         list-none rounded-md shadow-lg
-                        bg-clip-padding
                         `}
                     >
                         <li>
@@ -59,7 +58,7 @@ export default function SigninBtn() {
     }
 
     return <button
-        className='p-3 py-1 rounded-full  border-gray-500 border'
+        className='p-3 py-1 rounded-md  border-gray-500 border'
         onClick={() => signIn()}>
         Sign in
     </button>
