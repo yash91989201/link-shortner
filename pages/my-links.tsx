@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import Image from 'next/image'
 import { useForm } from 'react-hook-form'
 import { GetServerSideProps } from 'next'
 import { useMutation, useQuery } from '@tanstack/react-query'
@@ -109,8 +110,15 @@ export default function MyLinks({ user, links }: Props): JSX.Element {
             </form>
             {
                 queryResult.data?.length == 0 &&
-                <div className='my-6 p-12 md:p-24 border-gray-200 border-2 text-center rounded'>
-                    <p className='text-lg md:text-2xl font-bold text-gray-200'>No links created</p>
+                <div className='my-6 p-8 md:p-16 flex flex-col items-center border-indigo-100 border rounded space-y-3'>
+                    <div className="relative w-48 lg:w-72 aspect-square">
+                        <Image
+                            src="/assets/empty_list.svg"
+                            alt='No links'
+                            layout='fill'
+                        />
+                    </div>
+                    <p className='text-lg md:text-3xl font-bold text-indigo-100'>No links created</p>
                 </div>
             }
             {

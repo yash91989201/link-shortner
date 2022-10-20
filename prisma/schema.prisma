@@ -9,8 +9,6 @@ datasource db {
   referentialIntegrity = "prisma"
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
-
 model Account {
   id                String  @id @default(cuid())
   userId            String
@@ -24,21 +22,28 @@ model Account {
   scope             String?
   id_token          String? @db.Text
   session_state     String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
 
 model ShortLink {
-  id         String   @id @default(cuid())
-  created_at DateTime @default(now())
-  url        String   @db.VarChar(2000)
-  slug       String   @unique
-  user       User     @relation(fields: [userId], references: [id])
+  id         String      @id @default(cuid())
+  created_at DateTime    @default(now())
+  url        String      @db.VarChar(2000)
+  slug       String      @unique
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String
+  LinkStats  LinkStats[]
 
-  @@index(slug)
+  @@index([slug])
+}
+
+model LinkStats {
+  id          String    @id @default(cuid())
+  created_at  DateTime  @default(now())
+  shortLink   ShortLink @relation(fields: [shortLinkId], references: [id], onDelete: Cascade)
+  shortLinkId String
 }
 
 model Session {

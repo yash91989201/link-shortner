@@ -11,8 +11,8 @@ export default function Index({ session }: Props): JSX.Element {
 
     return <div>
         <Head>
-            <title>Link Stats &vert; Link Shortner</title>
-            <meta name="description" content="Shorten your links and share them all over the world" />
+            <title>Link Stats | Link Shortner</title>
+            <meta name="description" content="See all of your link and their statistics" />
         </Head>
     </div>
 

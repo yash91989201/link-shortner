@@ -23,3 +23,11 @@ interface DeleteLinkVars {
 }
 
 interface DeleteLinkResult<T> extends CustomResponseType<T> {}
+
+interface GetLinkStatsVars {
+  slug: string;
+  fromDate: string;
+  toDate: string;
+}
+
+interface GetLinkStatsResult<T> extends CustomResponseType<T> {}

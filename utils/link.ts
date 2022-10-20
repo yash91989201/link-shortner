@@ -1,4 +1,4 @@
-import type { ShortLink } from "@prisma/client";
+import type { LinkStats, ShortLink } from "@prisma/client";
 
 async function getLinks(
   userId: GetLinkVars
@@ -21,14 +21,14 @@ async function createLink({
     "http://localhost:3000/api/link/create-link",
     {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({
         userId,
         url,
         slug,
       }),
-      headers: {
-        "content-type": "application/json",
-      },
     }
   );
   const res = await fetchResult.json();
@@ -40,16 +40,36 @@ async function deleteLink({ id }: DeleteLinkVars) {
     "http://localhost:3000/api/link/delete-link",
     {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({
         id,
       }),
-      headers: {
-        "content-type": "application/json",
-      },
     }
   );
   const res = await fetchResult.json();
   return res;
 }
 
-export { getLinks, createLink, deleteLink };
+async function getLinkStats({
+  slug,
+  fromDate,
+  toDate,
+}: GetLinkStatsVars): Promise<GetLinkStatsResult<LinkStats[]>> {
+  const fetchResult = await fetch("http://localhost:3000/api/link/stats", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      slug,
+      fromDate,
+      toDate,
+    }),
+  });
+  const res = await fetchResult.json();
+  return res;
+}
+
+export { getLinks, createLink, deleteLink, getLinkStats };

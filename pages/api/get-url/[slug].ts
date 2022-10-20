@@ -15,6 +15,11 @@ export default async function handler(
       },
     });
     if (queryResult !== null) {
+      await prisma.linkStats.create({
+        data: {
+          shortLinkId: queryResult.id,
+        },
+      });
       res.status(200).json({ success: true, url: queryResult?.url });
     }
     res.end();
