@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { GetServerSideProps } from "next";
 import Link from "next/link";
 import Image from "next/image";
@@ -6,9 +7,9 @@ import { useQuery } from "@tanstack/react-query";
 // custom components
 import LinkCard from "components/MyLinks/LinkCard";
 // utils
-import { getLinks } from "utils/link";
+import { getLinks, getLinkStats } from "utils/link";
 import withAuth from "utils/withAuth";
-import { ShortLink, User } from "@prisma/client";
+import { LinkStats, ShortLink, User } from "@prisma/client";
 
 interface Props {
   user: User;
@@ -16,6 +17,7 @@ interface Props {
 }
 
 export default function Index({ user, links }: Props): JSX.Element {
+  const [totalClicks, setTotalClicks] = useState<LinkStats[] | undefined[]>([]);
   const { data: queryResult } = useQuery<GetLinkResult<ShortLink[]>>(
     ["get-links"],
     (): Promise<GetLinkResult<ShortLink[]>> => getLinks({ userId: user.id }),
@@ -55,11 +57,11 @@ export default function Index({ user, links }: Props): JSX.Element {
           <div className="grid grid-cols-1 gap-4 my-6 sm:grid-cols-2 md:grid-cols-3">
             {!!queryResult.data &&
               queryResult.data.map((link) => (
-                <Link key={link.id} href={`/link-stats/${link.id}`}>
-                  <a className="flex">
-                    <LinkCard key={link.id} link={link} />
-                  </a>
-                </Link>
+                <LinkCardWithClicks
+                  key={link.id}
+                  link={link}
+                  slug={link.slug}
+                />
               ))}
           </div>
         }
@@ -67,6 +69,26 @@ export default function Index({ user, links }: Props): JSX.Element {
     </div>
   );
 }
+
+const LinkCardWithClicks = ({
+  link,
+  slug,
+}: {
+  link: ShortLink;
+  slug: string;
+}) => {
+  console.log(slug);
+  const { data: queryResult, isLoading } = useQuery(
+    ["get-link-stats"],
+    (): Promise<GetLinkStatsResult<LinkStats[]>> =>
+      getLinkStats({
+        slug,
+        fromDate: "1970-01-01T00:00:00.000Z",
+        toDate: new Date().toISOString(),
+      })
+  );
+  return <LinkCard link={link} total_clicks={queryResult?.data?.length} />;
+};
 
 export const getServerSideProps: GetServerSideProps = withAuth({
   async gssp(_, user) {

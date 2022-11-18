@@ -14,9 +14,14 @@ import { query_client } from "pages/_app";
 interface Props {
   link: ShortLink;
   allLinks?: boolean;
+  total_clicks?: number;
 }
 
-export default function LinkCard({ link, allLinks }: Props): JSX.Element {
+export default function LinkCard({
+  link,
+  allLinks,
+  total_clicks,
+}: Props): JSX.Element {
   const shortLink = `${process.env.NEXT_PUBLIC_DOMAIN}/r/${link.slug}`;
   const { mutate: deleteLinkMutation } = useMutation({
     mutationKey: ["create-link"],
@@ -51,27 +56,33 @@ export default function LinkCard({ link, allLinks }: Props): JSX.Element {
   return (
     <div className="flex flex-col w-full p-3 rounded shadow-md bg-gray-50 hover:shadow-lg">
       <div className="flex flex-col flex-1">
-        {!!allLinks && (
-          <div className="flex justify-end my-1 ">
-            <button
-              className="text-sm p-1.5 flex items-center  bg-yellow-400 text-white rounded-full space-x-2"
-              onClick={() => copyToClipboard(shortLink)}
-            >
-              <HiShare />
-            </button>
-            <Link href={`/link-stats/${link.slug}`}>
-              <a className="text-sm mx-3 p-1.5 flex items-center  bg-green-500 text-white rounded-full space-x-2">
-                <ImStatsDots />
-              </a>
-            </Link>
-            <button
-              className="text-sm p-1.5 flex items-center bg-red-500 text-white rounded-full space-x-2"
-              onClick={() => deleteLinkHandler(link.id)}
-            >
-              <MdDelete />
-            </button>
-          </div>
-        )}
+        <div className="flex justify-end my-1 ">
+          {!!allLinks ? (
+            <>
+              <button
+                className="text-sm p-1.5 flex items-center  bg-yellow-400 text-white rounded-full space-x-2"
+                onClick={() => copyToClipboard(shortLink)}
+              >
+                <HiShare />
+              </button>
+              <Link href={`/link-stats`}>
+                <a className="text-sm mx-3 p-1.5 flex items-center  bg-green-500 text-white rounded-full space-x-2">
+                  <ImStatsDots />
+                </a>
+              </Link>
+              <button
+                className="text-sm p-1.5 flex items-center bg-red-500 text-white rounded-full space-x-2"
+                onClick={() => deleteLinkHandler(link.id)}
+              >
+                <MdDelete />
+              </button>
+            </>
+          ) : (
+            <div className="flex items-center space-x-3 text-base font-semibold">
+              <p>Total Clicks</p>:<span> {total_clicks}</span>
+            </div>
+          )}
+        </div>
         <div className="flex flex-col my-2 space-y-1">
           <h2 className="max-w-full text-lg font-semibold md:text-xl overflow-ellipse">
             {link.url.slice(0, 56)}...

@@ -27,3 +27,26 @@ export default async function handler(
     res.status(200).json({ success: false, message: "Unable to find url" });
   }
 }
+
+const createDateString = () => {
+  const d = new Date();
+  const date = d.getDate();
+  const month1 = month[d.getMonth()];
+  const year = d.getFullYear();
+  return `${date} ${month1} ${year}`;
+};
+
+const month = [
+  "JAN",
+  "FEB",
+  "MAR",
+  "APR",
+  "MAY",
+  "JUN",
+  "JUL",
+  "AUG",
+  "SEPT",
+  "OCT",
+  "NOV",
+  "DEV",
+];
