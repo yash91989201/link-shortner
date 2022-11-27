@@ -6,7 +6,7 @@ import SigninBtn from "./SigninBtn";
 import { useRouter } from "next/router";
 // import icons
 import { HiMenuAlt4 } from "react-icons/hi";
-import { TbLogout } from "react-icons/tb";
+import { TbLogout, TbLogin } from "react-icons/tb";
 
 export default function Header() {
   const router = useRouter();
@@ -67,23 +67,34 @@ export default function Header() {
             ${menu ? "scale-y-100 " : "scale-y-0 "}
         `}
       >
-        <Link href="/my-links">
-          <a className="menu-item" onClick={() => setMenu(false)}>
-            My Links
-          </a>
-        </Link>
-        <Link href="/link-stats">
-          <a className="menu-item" onClick={() => setMenu(false)}>
-            Link Stats
-          </a>
-        </Link>
-        <button
-          className="flex items-center justify-between text-gray-900 bg-gray-100 menu-item"
-          onClick={() => signOut()}
-        >
-          <p>Signout</p>
-          <TbLogout className="mx-3" />
-        </button>
+        {user.status === "authenticated" ? (
+          <>
+            <Link href="/my-links">
+              <a className="menu-item" onClick={() => setMenu(false)}>
+                My Links
+              </a>
+            </Link>
+            <Link href="/link-stats">
+              <a className="menu-item" onClick={() => setMenu(false)}>
+                Link Stats
+              </a>
+            </Link>
+            <button
+              className="flex items-center justify-between text-gray-900 bg-gray-100 menu-item"
+              onClick={() => signOut()}
+            >
+              <p>Signout</p>
+              <TbLogout className="mx-3" />
+            </button>
+          </>
+        ) : (
+          <Link href="signin">
+            <a className="flex items-center justify-between text-gray-900 bg-gray-100 menu-item">
+              <p>SignIn</p>
+              <TbLogin className="mx-3" />
+            </a>
+          </Link>
+        )}
       </div>
     </header>
   );
